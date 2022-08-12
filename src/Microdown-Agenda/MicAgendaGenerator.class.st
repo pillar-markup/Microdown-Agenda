@@ -5,16 +5,12 @@ Class {
 	#name : #MicAgendaGenerator,
 	#superclass : #MicHTMLVisitor,
 	#instVars : [
-		'parentFile',
 		'time',
-		'talkTemplate',
-		'agendaTemplate',
 		'daysHeadersBlock',
 		'daysTalks',
-		'dayTalksTemplate',
 		'talks',
 		'daysNumber',
-		'dayHeaderBlockTemplate'
+		'scheduleFile'
 	],
 	#category : #'Microdown-Agenda'
 }
@@ -167,16 +163,40 @@ MicAgendaGenerator class >> talkTemplate: aNewLine [
 '								</li>'
 ]
 
-{ #category : #visiting }
-MicAgendaGenerator >> build: aScheduleFile [
+{ #category : #'accessing - templates' }
+MicAgendaGenerator >> agendaTemplate [ 
 	
-	| file fileReference|
-	parentFile := aScheduleFile parent.
-	file := Microdown parse: aScheduleFile contents.
-	fileReference := (parentFile / 'GeneratedHTML/Schedule.html') asFileReference.
-	fileReference ensureDelete.
+	^ self templatesDir / 'agenda.mustache'
+]
+
+{ #category : #visiting }
+MicAgendaGenerator >> build: scheduleFileRef [
+	
+	| file outputFile |
+	scheduleFile := scheduleFileRef. 
+	file := Microdown parse: self scheduleFile contents.
+	outputFile := self outputDir / 'schedule.html'.
+	outputFile ensureDelete.
 	self visit: file.
-	fileReference writeStreamDo: [ :stream | stream nextPutAll: self contents ]
+	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ]
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> currentDir [
+
+	^ self scheduleFile parent
+]
+
+{ #category : #'accessing - templates' }
+MicAgendaGenerator >> dayHeaderBlockTemplate [
+
+	^ self templatesDir / 'dayHeaderBlock.mustache'
+]
+
+{ #category : #'accessing - templates' }
+MicAgendaGenerator >> dayTalksTemplate [
+
+	^ self templatesDir / 'dayTalks.mustache'
 ]
 
 { #category : #initialization }
@@ -190,13 +210,28 @@ MicAgendaGenerator >> initialize [
 	daysNumber := 0.
 ]
 
-{ #category : #visiting }
-MicAgendaGenerator >> templateInitialization [
+{ #category : #accessing }
+MicAgendaGenerator >> outputDir [
 
-	agendaTemplate := parentFile / 'Template/agendaTemplate.mustache' .
-	dayHeaderBlockTemplate := parentFile / 'Template/dayHeaderBlockTemplate.mustache'.
-	dayTalksTemplate :=parentFile / 'Template/dayTalksTemplate.mustache'.
-	talkTemplate := parentFile / 'Template/talkTemplate.mustache'.
+	^ self currentDir / 'generated'
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> scheduleFile [
+
+	^ scheduleFile
+]
+
+{ #category : #'accessing - templates' }
+MicAgendaGenerator >> talkTemplate [ 
+
+	^ self templatesDir / 'talk.mustache'
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> templatesDir [
+
+	^ self currentDir / 'templates'
 ]
 
 { #category : #accessing }
@@ -232,14 +267,13 @@ MicAgendaGenerator >> timePlus: aLength [
 
 { #category : #visiting }
 MicAgendaGenerator >> visitAgenda: anAgenda [
-	
+
 	| agenda |
-	self templateInitialization.
 	self visitChildrenOf: anAgenda.
-	agenda := (MustacheTemplate on: agendaTemplate) value: {
-	'NUMBERDAY' -> daysNumber. 
-	'DAYSBLOCK' -> daysHeadersBlock.
-	'DAYS' -> daysTalks } asDictionary.
+	agenda := (MustacheTemplate on: self agendaTemplate) value: { 
+			          ('NUMBERDAY' -> daysNumber).
+			          ('DAYSBLOCK' -> daysHeadersBlock).
+			          ('DAYS' -> daysTalks) } asDictionary.
 	canvas nextPutAll: agenda
 ]
 
@@ -247,49 +281,48 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 MicAgendaGenerator >> visitBreak: aBreak [
 
 	| length talk |
-	length := self time, ' - '.
+	length := self time , ' - '.
 	self timePlus: aBreak length.
-	length := length, self time.
-	
-	talk := (MustacheTemplate on: talkTemplate) value: { 
-	'TIME' -> length trim.
-	'SPEAKER' -> aBreak author.
-	'SUBJECT' -> aBreak subject.
-	'ROOM' -> aBreak room } asDictionary.
-	talks := talks, talk.
+	length := length , self time.
+
+	talk := (MustacheTemplate on: self talkTemplate) value: { 
+			        ('TIME' -> length trim).
+			        ('SPEAKER' -> aBreak author).
+			        ('SUBJECT' -> aBreak subject).
+			        ('ROOM' -> aBreak room) } asDictionary.
+	talks := talks , talk
 ]
 
 { #category : #visiting }
 MicAgendaGenerator >> visitDay: aDay [
 
-	| day dayBlock number numberDay active|
+	| day dayBlock number numberDay active |
 	daysNumber := daysNumber + 1.
-	active := ''.
-	(daysNumber = 1) 
-				ifTrue: [active := 'show active']
-				ifFalse: [active := ''].
-	number := 'day', daysNumber asString.
-	numberDay := 'Day-0', daysNumber asString.
-	dayBlock := (MustacheTemplate on: dayHeaderBlockTemplate) value: { 
-	'NUMBER' -> number.
-	'ACTIVE' -> active.
-	'DAYNUMBER' -> numberDay.
-	'DATE' -> aDay start } asDictionary.
-	daysHeadersBlock  := daysHeadersBlock, dayBlock.
+	active := daysNumber = 1
+		          ifTrue: [ 'show active' ]
+		          ifFalse: [ ' ' ].
+	number := 'day' , daysNumber asString.
+	numberDay := 'Day-0' , daysNumber asString.
+	dayBlock := (MustacheTemplate on: self dayHeaderBlockTemplate) 
+		            value: { 
+				            ('NUMBER' -> number).
+				            ('ACTIVE' -> active).
+				            ('DAYNUMBER' -> numberDay).
+				            ('DATE' -> aDay start) } asDictionary.
+	daysHeadersBlock := daysHeadersBlock , dayBlock.
 	self visitChildrenOf: aDay.
-	day := (MustacheTemplate on: dayTalksTemplate) value: { 
-	'DAYNUMBER' -> number.
-	'ACTIVE' -> active.
-	'SCHEDULES' -> talks asString } asDictionary.
-	daysTalks := daysTalks, day.
-	talks := ''.
+	day := (MustacheTemplate on: self dayTalksTemplate) value: { 
+			       ('DAYNUMBER' -> number).
+			       ('ACTIVE' -> active).
+			       ('SCHEDULES' -> talks asString) } asDictionary.
+	daysTalks := daysTalks , day.
+	talks := ''
 ]
 
 { #category : #visiting }
 MicAgendaGenerator >> visitSegment: aSegment [
 
 	self time: aSegment start.
-	talkTemplate := parentFile / 'Template/talkTemplate.mustache' contents.
 	self visitChildrenOf: aSegment.
 ]
 
@@ -297,14 +330,14 @@ MicAgendaGenerator >> visitSegment: aSegment [
 MicAgendaGenerator >> visitTalk: aTalk [
 
 	| length talk |
-	length := self time, ' - '.
+	length := self time , ' - '.
 	self timePlus: aTalk length.
-	length := length, self time.
-	
-	talk := (MustacheTemplate on: talkTemplate) value: { 
-	'TIME' -> length trim.
-	'SPEAKER' -> aTalk author.
-	'SUBJECT' -> aTalk subject.
-	'ROOM' -> aTalk room } asDictionary.
-	talks := talks, talk.
+	length := length , self time.
+
+	talk := (MustacheTemplate on: self talkTemplate) value: { 
+			        ('TIME' -> length trim).
+			        ('SPEAKER' -> aTalk author).
+			        ('SUBJECT' -> aTalk subject).
+			        ('ROOM' -> aTalk room) } asDictionary.
+	talks := talks , talk
 ]
