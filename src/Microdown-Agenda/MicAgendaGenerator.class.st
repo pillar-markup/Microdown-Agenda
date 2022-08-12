@@ -9,7 +9,6 @@ Class {
 		'scheduleFile',
 		'talksHtml',
 		'daysHtml',
-		'scheduleName',
 		'daysHeaderBlockHtml',
 		'dayNumber'
 	],
@@ -21,7 +20,7 @@ MicAgendaGenerator >> activeDayCssClasses [
 	
 	^ dayNumber = 1
 		          ifTrue: [ 'show active' ]
-		          ifFalse: [ ' ' ]
+		          ifFalse: [ '' ]
 ]
 
 { #category : #'accessing - templates' }
@@ -132,17 +131,6 @@ MicAgendaGenerator >> scheduleFile [
 	^ scheduleFile
 ]
 
-{ #category : #accessing }
-MicAgendaGenerator >> scheduleName [
-	^ scheduleName ifNil: [ '' ]
-]
-
-{ #category : #accessing }
-MicAgendaGenerator >> scheduleName: aName [
-
-	scheduleName := aName
-]
-
 { #category : #'accessing - templates' }
 MicAgendaGenerator >> talkTemplate [ 
 
@@ -179,7 +167,7 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 	| agenda |
 	self visitChildrenOf: anAgenda.
 	agenda := (MustacheTemplate on: self agendaTemplate) value: { 
-			          ('SCHEDULE_NAME' -> self scheduleName).
+			          ('AGENDA_NAME' -> anAgenda title).
 			          ('DAYS_HEADER_BLOCK_HTML' -> daysHeaderBlockHtml).
 			          ('DAYS_HTML' -> daysHtml) } asDictionary.
 	canvas nextPutAll: agenda
