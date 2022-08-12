@@ -247,22 +247,9 @@ MicAgendaGenerator >> time: aTime [
 ]
 
 { #category : #visiting }
-MicAgendaGenerator >> timePlus: aLength [
+MicAgendaGenerator >> timePlus: nbMinutes [
 
-	| currentHours currentMins addedTime nbHours |
-	currentHours := ((self time substrings: 'h') at: 1) asNumber .
-	currentMins := ((self time substrings: 'h') at: 2) .
-	addedTime := aLength allButLast asNumber.
-	nbHours := addedTime // 60.
-	addedTime := addedTime - (nbHours * 60).
-	(currentMins asNumber + addedTime = 60 or: currentMins asNumber + addedTime = 0) 
-			ifTrue: [ (currentMins asNumber + addedTime = 60) 
-					ifTrue: [ ^ self time: ((currentHours  + nbHours + 1) asString, 'h00') ]
-					ifFalse: [ ^ self time: ((currentHours  + nbHours) asString, 'h00') ] ]
-			ifFalse: [ (currentMins asNumber + addedTime > 60) 
-					ifTrue:[ ^ self time: ((currentHours  + nbHours + 1) asString, 'h', (currentMins asNumber + addedTime - 60) asString)] 
-					ifFalse:[ ^ self time: ((currentHours  + nbHours) asString, 'h', (currentMins asNumber + addedTime) asString)]]
-	
+	self time: (self time addTime: nbMinutes minutes)
 ]
 
 { #category : #visiting }
@@ -322,7 +309,7 @@ MicAgendaGenerator >> visitDay: aDay [
 { #category : #visiting }
 MicAgendaGenerator >> visitSegment: aSegment [
 
-	self time: aSegment start.
+	self time: aSegment start asTime.
 	self visitChildrenOf: aSegment.
 ]
 
