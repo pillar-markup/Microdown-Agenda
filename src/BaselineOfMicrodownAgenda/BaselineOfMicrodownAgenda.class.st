@@ -13,7 +13,8 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 		self mustache: spec.				
 
 		spec
-			package: #'Microdown-Agenda';
+			package: #'Microdown-Agenda'
+				with: [ spec requires: #( #Microdown #Mustache ) ];
 			package: #'Microdown-Agenda-Tests'
 				with: [ spec requires: #( #'Microdown-Agenda' ) ].
 				
