@@ -6,14 +6,23 @@ Class {
 	#superclass : #MicHTMLVisitor,
 	#instVars : [
 		'time',
-		'daysHeadersBlock',
-		'daysTalks',
-		'daysNumber',
 		'scheduleFile',
-		'talksHtml'
+		'talksHtml',
+		'daysHtml',
+		'scheduleName',
+		'daysHeaderBlockHtml',
+		'dayNumber'
 	],
 	#category : #'Microdown-Agenda'
 }
+
+{ #category : #private }
+MicAgendaGenerator >> activeDayCssClasses [
+	
+	^ dayNumber = 1
+		          ifTrue: [ 'show active' ]
+		          ifFalse: [ ' ' ]
+]
 
 { #category : #'accessing - templates' }
 MicAgendaGenerator >> agendaTemplate [ 
@@ -40,10 +49,37 @@ MicAgendaGenerator >> currentDir [
 	^ self scheduleFile parent
 ]
 
+{ #category : #private }
+MicAgendaGenerator >> dayHeaderBlockHtmlForDay: aDay [
+
+	^ (MustacheTemplate on:
+		                       self dayHeaderBlockTemplate) value: { 
+			                      ('DAY_ID' -> self dayId).
+			                      ('ACTIVE_CLASSES' -> self activeDayCssClasses).
+			                      ('DAY_NUMBER' -> ('Day-0' , dayNumber asString)).
+			                      ('DATE' -> aDay start) } asDictionary.
+
+]
+
 { #category : #'accessing - templates' }
 MicAgendaGenerator >> dayHeaderBlockTemplate [
 
 	^ self templatesDir / 'dayHeaderBlock.mustache'
+]
+
+{ #category : #private }
+MicAgendaGenerator >> dayHtml [
+
+	^ (MustacheTemplate on: self dayTalksTemplate) value: { 
+			           ('DAY_ID' -> self dayId).
+			           ('ACTIVE_CLASSES' -> self activeDayCssClasses).
+			           ('SCHEDULES' -> talksHtml asString) } asDictionary
+]
+
+{ #category : #private }
+MicAgendaGenerator >> dayId [
+	
+	^ 'day' , dayNumber asString
 ]
 
 { #category : #'accessing - templates' }
@@ -57,10 +93,10 @@ MicAgendaGenerator >> initialize [
 
 	super initialize.
 	time := ''.
-	daysTalks := ''.
-	daysHeadersBlock := ''.
+	daysHtml := ''.
+	daysHeaderBlockHtml := ''.
 	talksHtml := ''.
-	daysNumber := 0.
+	dayNumber := 0.
 ]
 
 { #category : #accessing }
@@ -73,6 +109,17 @@ MicAgendaGenerator >> outputDir [
 MicAgendaGenerator >> scheduleFile [
 
 	^ scheduleFile
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> scheduleName [
+	^ scheduleName ifNil: [ '' ]
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> scheduleName: aName [
+
+	scheduleName := aName
 ]
 
 { #category : #'accessing - templates' }
@@ -111,9 +158,9 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 	| agenda |
 	self visitChildrenOf: anAgenda.
 	agenda := (MustacheTemplate on: self agendaTemplate) value: { 
-			          ('NUMBERDAY' -> daysNumber).
-			          ('DAYSBLOCK' -> daysHeadersBlock).
-			          ('DAYS' -> daysTalks) } asDictionary.
+			          ('SCHEDULE_NAME' -> self scheduleName).
+			          ('DAYS_HEADER_BLOCK_HTML' -> daysHeaderBlockHtml).
+			          ('DAYS_HTML' -> daysHtml) } asDictionary.
 	canvas nextPutAll: agenda
 ]
 
@@ -127,26 +174,10 @@ MicAgendaGenerator >> visitBreak: aBreak [
 { #category : #visiting }
 MicAgendaGenerator >> visitDay: aDay [
 
-	| day dayBlock number numberDay active |
-	daysNumber := daysNumber + 1.
-	active := daysNumber = 1
-		          ifTrue: [ 'show active' ]
-		          ifFalse: [ ' ' ].
-	number := 'day' , daysNumber asString.
-	numberDay := 'Day-0' , daysNumber asString.
-	dayBlock := (MustacheTemplate on: self dayHeaderBlockTemplate) 
-		            value: { 
-				            ('NUMBER' -> number).
-				            ('ACTIVE' -> active).
-				            ('DAYNUMBER' -> numberDay).
-				            ('DATE' -> aDay start) } asDictionary.
-	daysHeadersBlock := daysHeadersBlock , dayBlock.
+	dayNumber := dayNumber + 1.
+	daysHeaderBlockHtml := daysHeaderBlockHtml , (self dayHeaderBlockHtmlForDay: aDay).
 	self visitChildrenOf: aDay.
-	day := (MustacheTemplate on: self dayTalksTemplate) value: { 
-			       ('DAYNUMBER' -> number).
-			       ('ACTIVE' -> active).
-			       ('SCHEDULES' -> talksHtml asString) } asDictionary.
-	daysTalks := daysTalks , day.
+	daysHtml := daysHtml , self dayHtml.
 	talksHtml := ''
 ]
 
