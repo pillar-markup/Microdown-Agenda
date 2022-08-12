@@ -40,7 +40,16 @@ MicAgendaGenerator >> build: scheduleFileRef [
 	self outputDir ensureCreateDirectory.
 	outputFile ensureDelete.
 	self visit: file.
-	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ]
+	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
+	self copyResourcesIfAbsent.
+]
+
+{ #category : #building }
+MicAgendaGenerator >> copyResourcesIfAbsent [
+
+	self resourcesOutputDir exists ifTrue: [ ^ self ].
+	
+	self resourcesDir copyAllTo: self resourcesOutputDir.
 ]
 
 { #category : #accessing }
@@ -103,6 +112,18 @@ MicAgendaGenerator >> initialize [
 MicAgendaGenerator >> outputDir [
 
 	^ self currentDir / 'generated'
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> resourcesDir [
+
+	^ self currentDir / 'resources'
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> resourcesOutputDir [
+
+	^ self outputDir / 'resources'
 ]
 
 { #category : #accessing }
