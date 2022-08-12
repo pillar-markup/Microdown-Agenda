@@ -182,7 +182,9 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectly [
 
 	"Look at the class comment for more information about this test"
 
-	"| fs file ast|
+	| fs file ast|
+	
+	self skip.
 	fs := FileSystem memory.
 	file := fs root / 'agenda.md'.
 	file writeStreamDo: [ :stream |
@@ -250,7 +252,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectly [
 '											<!-- Venue -->', newLine,
 '											<div class=""venue"">Building C</div>', newLine,
 '										</div>', newLine,
-'								</li>', newLine, newLine"
+'								</li>', newLine, newLine
 	
 ]
 
@@ -259,8 +261,9 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 
 	"Look at the class comment for more information about this test"
 
-	"| fs file ast|
+	| fs file ast|
 
+	self skip.
 	fs := FileSystem memory.
 	file := fs root / 'agenda.md'.
 	file writeStreamDo: [ :stream |
@@ -328,7 +331,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 '											<!-- Venue -->', newLine,
 '											<div class=""venue"">Building C</div>', newLine,
 '										</div>', newLine,
-'								</li>', newLine, newLine"
+'								</li>', newLine, newLine
 	
 ]
 
@@ -337,8 +340,9 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithOneTalk [
 
 	"Look at the class comment for more information about this test"
 
-	"| fs file ast|
+	| fs file ast|
 
+	self skip.
 	fs := FileSystem memory.
 	file := fs root / 'agenda.md'.
 	file writeStreamDo: [ :stream |
@@ -368,7 +372,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithOneTalk [
 '											<!-- Venue -->', newLine,
 '											<div class=""venue"">Building B</div>', newLine,
 '										</div>', newLine,
-'								</li>', newLine, newLine"
+'								</li>', newLine, newLine
 ]
 
 { #category : #tests }
@@ -376,8 +380,9 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithRealInfo [
 
 	"Look at the class comment for more information about this test"
 
-	"| fs file ast|
+	| fs file ast|
 
+	self skip.
 	fs := FileSystem memory.
 	file := fs root / 'agenda.md'.
 	file writeStreamDo: [ :stream |
@@ -445,7 +450,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithRealInfo [
 '											<!-- Venue -->', newLine,
 '											<div class=""venue"">Building C</div>', newLine,
 '										</div>', newLine,
-'								</li>', newLine, newLine"
+'								</li>', newLine, newLine
 	
 ]
 
