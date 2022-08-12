@@ -1,5 +1,5 @@
 "
-I represent an Agenda which contain the differents days which are my children.
+I represent an Agenda containing the different days which are my children.
 "
 Class {
 	#name : #MicAgendaBlock,
