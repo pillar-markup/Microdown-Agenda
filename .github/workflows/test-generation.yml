@@ -17,6 +17,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    uses:  pillar-markup/Microdown-Agenda/.github/workflows/main.yml@master
+    uses:  pillar-markup/Microdown-Agenda/.github/workflows/main.yml@main
     with:
       agenda_filename: example/schedule.md
