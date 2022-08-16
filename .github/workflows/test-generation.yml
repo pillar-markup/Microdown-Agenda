@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
-    uses:  pillar-markup/Microdown-Agenda/.github/workflows/main.yml@main
+  test_html_gen:
+    uses: pillar-markup/Microdown-Agenda/.github/workflows/main.yml@main
     with:
       agenda_filename: example/schedule.md
