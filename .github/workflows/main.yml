@@ -23,4 +23,4 @@ jobs:
       - name: Build HTML
         run: |
           ./pharo Pharo.image eval "MicAgendaGenerator new build: './Microdown-Agenda/example/schedule.md' asFileReference"
-          ls -R _result/
+          ls -R ./Microdown-Agenda/example/generated/
