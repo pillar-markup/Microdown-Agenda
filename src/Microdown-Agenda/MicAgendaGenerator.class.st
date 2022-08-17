@@ -35,7 +35,7 @@ MicAgendaGenerator >> build: scheduleFileRef [
 	| file outputFile |
 	scheduleFile := scheduleFileRef. 
 	file := Microdown parse: self scheduleFile contents.
-	outputFile := self outputDir / 'schedule.html'.
+	outputFile := self outputDir / (self scheduleFile basenameWithoutExtension, '.html').
 	self outputDir ensureCreateDirectory.
 	outputFile ensureDelete.
 	self visit: file.
