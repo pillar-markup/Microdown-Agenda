@@ -18,7 +18,7 @@ jobs:
       - name: Prepare Microdown
         run: |
           git clone https://github.com/pillar-markup/Microdown-Agenda.git
-          ./build-md-image.sh
+          ./Microdown-Agenda/build-md-image.sh
 
       - name: Build HTML
         run: |
