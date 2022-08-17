@@ -23,7 +23,7 @@ jobs:
       - name: Build HTML
         run: |
           ./pharo Pharo.image eval "MicAgendaGenerator new build: '${{ inputs.agenda_filename }}' asFileReference"
-          ls -R ./Microdown-Agenda/example/generated/
+          ls -R  $( dirname ${{ inputs.agenda_filename }} )/generated
 
       # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
       - uses: actions/upload-artifact@v3
