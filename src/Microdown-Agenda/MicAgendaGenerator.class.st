@@ -53,8 +53,13 @@ MicAgendaGenerator >> copyResourcesIfAbsent [
 
 { #category : #accessing }
 MicAgendaGenerator >> currentDir [
+	" Core repository where to find resources, templates.
+	They come with Microdown Agenda git repository.
+	If the git repository is not found, we assume resources and templates to be available in the same directory as the agenda file"
 
-	^ self scheduleFile parent
+	^ [ self gitRepositoryDir ]
+		on: NotFound 
+		do: [ self scheduleFile parent ]
 ]
 
 { #category : #private }
@@ -96,6 +101,13 @@ MicAgendaGenerator >> dayTalksTemplate [
 	^ self templatesDir / 'dayTalks.mustache'
 ]
 
+{ #category : #private }
+MicAgendaGenerator >> gitRepositoryDir [
+
+	^ (IceRepository registry 
+    		detect: [ :each | 'Microdown-Agenda' = each name ]) repositoryDirectory
+]
+
 { #category : #initialization }
 MicAgendaGenerator >> initialize [
 
@@ -110,7 +122,7 @@ MicAgendaGenerator >> initialize [
 { #category : #accessing }
 MicAgendaGenerator >> outputDir [
 
-	^ self currentDir / 'generated'
+	^ self scheduleFile parent / 'generated'
 ]
 
 { #category : #accessing }
