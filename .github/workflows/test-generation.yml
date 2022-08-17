@@ -19,4 +19,4 @@ jobs:
   test_html_gen:
     uses: pillar-markup/Microdown-Agenda/.github/workflows/main.yml@main
     with:
-      agenda_filename: example/schedule.md
+      agenda_filename: ./Microdown-Agenda/example/schedule.md
