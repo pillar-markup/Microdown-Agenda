@@ -1,7 +1,7 @@
 on: 
   workflow_call:
     inputs:
-      bookname:
+      agenda_filename:
         description: 'Filename of the agenda to be built (e.g. schedule.md)'
         required: true
         type: string
@@ -17,10 +17,9 @@ jobs:
 
       - name: Prepare Microdown
         run: |
-          curl https://get.pharo.org/64/100+vm | bash
           git clone https://github.com/pillar-markup/Microdown-Agenda.git
-          ./pharo eval "Metacello new repository: 'gitlocal://', ('./Microdown-Agenda' asFileReference fullName), '/src'; baseline: 'MicrodownAgenda'; load"
-          
+          ./build-md-image.sh
+
       - name: Build HTML
         run: |
            ./pharo eval "MicAgendaGenerator new build: './Microdown-Agenda/example/schedule.md' asFileReference"
