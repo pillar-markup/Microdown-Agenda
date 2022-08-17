@@ -24,3 +24,10 @@ jobs:
         run: |
           ./pharo Pharo.image eval "MicAgendaGenerator new build: './Microdown-Agenda/example/schedule.md' asFileReference"
           ls -R ./Microdown-Agenda/example/generated/
+
+      # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
+      - uses: actions/upload-artifact@v3
+        with:
+          name: agenda
+          path: generated
+          retention-days: 5
