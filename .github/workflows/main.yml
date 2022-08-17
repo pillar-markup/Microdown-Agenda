@@ -22,5 +22,5 @@ jobs:
 
       - name: Build HTML
         run: |
-           ./pharo eval "MicAgendaGenerator new build: './Microdown-Agenda/example/schedule.md' asFileReference"
+          ./pharo eval "MicAgendaGenerator new build: './Microdown-Agenda/example/schedule.md' asFileReference"
           ls -R _result/
