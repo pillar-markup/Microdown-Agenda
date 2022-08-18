@@ -124,7 +124,12 @@ MicAgendaGenerator >> initialize [
 { #category : #private }
 MicAgendaGenerator >> logGenerationStart [
 
-	UIManager default inform: 'generating agenda for "', self scheduleFile fullName, '"'
+	Smalltalk logStdOutDuring: [:logger |
+		logger 
+			nextPutAll: 'generating agenda for "';
+			nextPutAll: self scheduleFile fullName;
+			nextPut: $";
+			cr ]. 
 ]
 
 { #category : #accessing }
