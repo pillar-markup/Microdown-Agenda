@@ -41,6 +41,7 @@ MicAgendaGenerator >> build: scheduleFileRef [
 	self visit: file.
 	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
 	self copyResourcesIfAbsent.
+	^ 'Succesfully generated ' , outputFile fullName.
 ]
 
 { #category : #building }
