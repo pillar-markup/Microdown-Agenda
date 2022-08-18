@@ -33,7 +33,8 @@ MicAgendaGenerator >> agendaTemplate [
 MicAgendaGenerator >> build: scheduleFileRef [
 	
 	| file outputFile |
-	scheduleFile := scheduleFileRef. 
+	scheduleFile := scheduleFileRef.
+	self logGenerationStart. 
 	file := Microdown parse: self scheduleFile contents.
 	outputFile := self outputDir / (self scheduleFile basenameWithoutExtension, '.html').
 	self outputDir ensureCreateDirectory.
@@ -118,6 +119,12 @@ MicAgendaGenerator >> initialize [
 	daysHeaderBlockHtml := ''.
 	talksHtml := ''.
 	dayNumber := 0.
+]
+
+{ #category : #private }
+MicAgendaGenerator >> logGenerationStart [
+
+	UIManager default inform: 'generating agenda for "', self scheduleFile fullName, '"'
 ]
 
 { #category : #accessing }
