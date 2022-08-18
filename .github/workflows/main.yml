@@ -29,6 +29,7 @@ jobs:
           read -ra agendas <<< "${{ inputs.agenda_filenames }}"
           for agenda in "${agendas[@]}";
           do
+          echo "generating agenda for $agenda"
           ./pharo Pharo.image eval "MicAgendaGenerator new build: '$agenda' trimBoth asFileReference"
           ls -R  $( dirname "$agenda" )/generated
           done
