@@ -1,8 +1,8 @@
 on: 
   workflow_call:
     inputs:
-      agenda_filename:
-        description: 'Filename of the agenda to be built (e.g. schedule.md)'
+      agenda_filenames:
+        description: 'Filenames of the agendas to be built, comma separated (e.g. schedule.md or agenda.md, workshop-agenda.md)'
         required: true
         type: string
         
@@ -22,8 +22,16 @@ jobs:
 
       - name: Build HTML
         run: |
-          ./pharo Pharo.image eval "MicAgendaGenerator new build: '${{ inputs.agenda_filename }}' asFileReference"
-          ls -R  $( dirname ${{ inputs.agenda_filename }} )/generated
+          # Set comma as the delimiter
+          IFS=','
+          # Read the split words into an array
+          # based on space delimiter
+          read -ra agendas <<< "${{ inputs.agenda_filenames }}"
+          for agenda in "${agendas[@]}";
+          do
+          ./pharo Pharo.image eval "MicAgendaGenerator new build: '$agenda' trimBoth asFileReference"
+          ls -R  $( dirname "$agenda" )/generated
+          done
 
       # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
       - uses: actions/upload-artifact@v3
