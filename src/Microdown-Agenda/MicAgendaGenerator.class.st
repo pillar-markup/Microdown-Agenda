@@ -10,10 +10,26 @@ Class {
 		'talksHtml',
 		'daysHtml',
 		'daysHeaderBlockHtml',
-		'dayNumber'
+		'dayNumber',
+		'abstractHtml'
 	],
 	#category : #'Microdown-Agenda'
 }
+
+{ #category : #accessing }
+MicAgendaGenerator >> abstractHtml [
+
+	^ abstractHtml ifNil: [ 
+	'						<i class="far fa-newspaper" aria-hidden="true"></i>
+						<p>Abstracts of talks and hands-on are available on <b><a href="./abstracts.html">the asbtracts page</a></b></p>
+' ]
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> abstractHtml: htmlString [
+
+	abstractHtml := htmlString
+]
 
 { #category : #private }
 MicAgendaGenerator >> activeDayCssClasses [
@@ -193,6 +209,7 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 	self visitChildrenOf: anAgenda.
 	agenda := (MustacheTemplate on: self agendaTemplate) value: { 
 			          ('AGENDA_NAME' -> anAgenda title).
+						 ('ABSTRACT' -> self abstractHtml).
 			          ('DAYS_HEADER_BLOCK_HTML' -> daysHeaderBlockHtml).
 			          ('DAYS_HTML' -> daysHtml) } asDictionary.
 	canvas nextPutAll: agenda
