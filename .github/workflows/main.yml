@@ -1,11 +1,15 @@
 on: 
   workflow_call:
     inputs:
-      agenda_filenames:
-        description: 'Filenames of the agendas to be built, comma separated (e.g. schedule.md or agenda.md, workshop-agenda.md)'
+      agenda_filename:
+        description: 'Filename of the agendas to be built, e.g. agenda.md'
         required: true
         type: string
-        
+      abstract_link:
+        description: 'A link to the abstract page, e.g. https://foo.org/abstracts.html'
+        required: false
+        type: string
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
@@ -22,17 +26,9 @@ jobs:
 
       - name: Build HTML
         run: |
-          # Set comma as the delimiter
-          IFS=','
-          # Read the split words into an array
-          # based on space delimiter
-          read -ra agendas <<< "${{ inputs.agenda_filenames }}"
-          for agenda in "${agendas[@]}";
-          do
-          echo "generating agenda for $agenda"
-          ./pharo  --headless Pharo.image eval "MicAgendaGenerator new build: '$agenda' trimBoth asFileReference"
-          ls -R  $( dirname "$agenda" )/generated
-          done
+          set -x
+          ./pharo  --headless Pharo.image eval "MicAgendaGenerator new abstractLink: '${{ inputs.abstract_link }}'; build: '${{ inputs.agenda_filename }}' trimBoth asFileReference"
+          ls -R  $( dirname "$agenda_filename" )/generated
 
       # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
       - uses: actions/upload-artifact@v3
