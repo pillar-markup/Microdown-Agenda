@@ -25,7 +25,7 @@ MicAgendaGenerator >> abstractLink [
 { #category : #accessing }
 MicAgendaGenerator >> abstractLink: abstractHtmlRef [
 
-	abstractLink := abstractHtmlRef
+	abstractLink := abstractHtmlRef ifEmpty: [ nil ]
 ]
 
 { #category : #private }
