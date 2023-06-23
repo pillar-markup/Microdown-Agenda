@@ -28,11 +28,11 @@ jobs:
         run: |
           set -x
           ./pharo  --headless Pharo.image eval "MicAgendaGenerator new abstractLink: '${{ inputs.abstract_link }}'; build: '${{ inputs.agenda_filename }}' trimBoth asFileReference"
-          ls -R  $( dirname "$agenda_filename" )/generated
+          ls -R  $( dirname "${{inputs.agenda_filename}}" )/generated
 
       # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
       - uses: actions/upload-artifact@v3
         with:
           name: agenda
-          path: $( dirname "$agenda_filename" )/generated
+          path: $( dirname "${{inputs.agenda_filename}}" )/generated
           retention-days: 5
