@@ -34,5 +34,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: agenda
-          path: generated
+          path: $( dirname "$agenda_filename" )/generated
           retention-days: 5
