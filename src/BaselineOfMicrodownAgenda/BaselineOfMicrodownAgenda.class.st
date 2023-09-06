@@ -37,6 +37,6 @@ BaselineOfMicrodownAgenda >> mustache: spec [
 
 	spec baseline: 'Mustache' with: [ 
 			spec
-				repository: 'github://noha/mustache:v1.1/repository';
+				repository: 'github://noha/mustache:v1.2/repository';
 				loads: #('Core') ]
 ]
