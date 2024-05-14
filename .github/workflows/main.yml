@@ -2,11 +2,11 @@ on:
   workflow_call:
     inputs:
       agenda_filename:
-        description: 'Filename of the agendas to be built, e.g. agenda.md'
+        description: 'Filenames of the agendas to be built, e.g. agenda1.md; agenda2.md'
         required: true
         type: string
       abstract_link:
-        description: 'A link to the abstract page, e.g. https://foo.org/abstracts.html'
+        description: 'Links to the abstract page, e.g. https://foo.org/abstracts.html'
         required: false
         type: string
 
@@ -27,8 +27,14 @@ jobs:
       - name: Build HTML
         run: |
           set -x
-          ./pharo  --headless Pharo.image eval "MicAgendaGenerator new abstractLink: '${{ inputs.abstract_link }}'; build: '${{ inputs.agenda_filename }}' trimBoth asFileReference"
-          echo "MD_OUTPUT_DIR=$( dirname '${{inputs.agenda_filename}}' )/generated" >> $GITHUB_ENV
+          # Split inputs on ; character
+          IFS=';' read -ra AGENDAS <<< "${{ inputs.agenda_filename }}"
+          IFS=';' read -ra LINKS <<< "${{ inputs.abstract_link }}"
+          for agenda_index in "${!AGENDAS[@]}"; do
+            LINK=${LINKS[$agenda_index]:-./abstracts.pdf}
+            ./pharo  --headless Pharo.image eval "MicAgendaGenerator new abstractLink: '$LINK'; build: '${AGENDAS[$agenda_index]}' trimBoth asFileReference"
+          done
+          echo "MD_OUTPUT_DIR=$( dirname '$AGENDAS[0]' )/generated" >> $GITHUB_ENV
 
       # archive generated HTML so it can be used in another job (reusable workflows cannot have multiple steps)
       - uses: actions/upload-artifact@v3

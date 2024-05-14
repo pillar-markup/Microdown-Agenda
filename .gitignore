@@ -14,3 +14,5 @@ Pharo.image
 Pharo*.sources
 
 pharo-vm/
+
+.DS_Store
