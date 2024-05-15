@@ -187,6 +187,7 @@ MicAgendaGeneratorTest >> testAgendaHtmlIsGeneratedInRightDirectoryWhenAbsoluteF
 	
 	self assert: generator resourcesOutputDir equals: FileLocator workingDirectory / 'generated' / 'resources'.
 	self assert: generator outputFile equals: FileLocator root / 'foo' / 'bar' / 'agenda.html'.
+	self assert: generator generatedResourcesPath equals: './resources'
 ]
 
 { #category : #tests }
@@ -199,6 +200,7 @@ MicAgendaGeneratorTest >> testAgendaHtmlIsGeneratedInRightDirectoryWhenRelativeF
 	
 	self assert: generator resourcesOutputDir equals: FileLocator workingDirectory / 'generated' / 'resources'.
 	self assert: generator outputFile equals: FileLocator workingDirectory / 'generated' / 'foo' / 'bar' / 'agenda.html'.
+	self assert: generator generatedResourcesPath equals: '../../resources'
 ]
 
 { #category : #tests }

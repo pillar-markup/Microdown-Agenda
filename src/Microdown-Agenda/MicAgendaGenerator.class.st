@@ -116,7 +116,7 @@ MicAgendaGenerator >> dayTalksTemplate [
 	^ self templatesDir / 'dayTalks.mustache'
 ]
 
-{ #category : #building }
+{ #category : #private }
 MicAgendaGenerator >> ensureOutputFileParentCreated: aFileReference [
 
 	self outputDir ensureCreateDirectory.
@@ -124,6 +124,22 @@ MicAgendaGenerator >> ensureOutputFileParentCreated: aFileReference [
 	
 	self ensureOutputFileParentCreated: aFileReference parent.
 	aFileReference parent ensureCreateDirectory
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> generatedResourcesPath [
+
+	| nbNestedFolders resourcesPathString |
+	
+	self outputFile isAbsolute ifTrue: [ ^ './resources' ].
+	
+	nbNestedFolders := (self outputFile relativeTo: self outputDir) segments size - 1.
+	resourcesPathString := ''.
+	nbNestedFolders timesRepeat: [ resourcesPathString := '../' , resourcesPathString ].
+	^ resourcesPathString
+		ifEmpty: [ './resources' ]
+		ifNotEmpty: [ resourcesPathString , 'resources' ]
+	
 ]
 
 { #category : #private }
@@ -230,7 +246,8 @@ MicAgendaGenerator >> visitAgenda: anAgenda [
 						 ('HAS_ABSTRACT' -> self abstractLink notNil).
 						 ('ABSTRACT_LINK' -> self abstractLink).
 			          ('DAYS_HEADER_BLOCK_HTML' -> daysHeaderBlockHtml).
-			          ('DAYS_HTML' -> daysHtml) } asDictionary.
+			          ('DAYS_HTML' -> daysHtml).
+						 ('RESOURCES_PATH' -> self generatedResourcesPath) } asDictionary.
 	canvas nextPutAll: agenda
 ]
 
