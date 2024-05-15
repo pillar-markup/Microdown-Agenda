@@ -178,6 +178,30 @@ MicAgendaGeneratorTest >> testAgendaAstIsCorrect [
 ]
 
 { #category : #tests }
+MicAgendaGeneratorTest >> testAgendaHtmlIsGeneratedInRightDirectoryWhenAbsoluteFileRef [
+
+	| agendaMdFile generator |
+	agendaMdFile := '/foo/bar/agenda.md' asFileReference.
+	generator := MicAgendaGenerator new.
+	generator scheduleFile: agendaMdFile.
+	
+	self assert: generator resourcesOutputDir equals: FileLocator workingDirectory / 'generated' / 'resources'.
+	self assert: generator outputFile equals: FileLocator root / 'foo' / 'bar' / 'agenda.html'.
+]
+
+{ #category : #tests }
+MicAgendaGeneratorTest >> testAgendaHtmlIsGeneratedInRightDirectoryWhenRelativeFileRef [
+
+	| agendaMdFile generator |
+	agendaMdFile := FileLocator workingDirectory / 'foo' / 'bar' / 'agenda.md'.
+	generator := MicAgendaGenerator new.
+	generator scheduleFile: agendaMdFile.
+	
+	self assert: generator resourcesOutputDir equals: FileLocator workingDirectory / 'generated' / 'resources'.
+	self assert: generator outputFile equals: FileLocator workingDirectory / 'generated' / 'foo' / 'bar' / 'agenda.html'.
+]
+
+{ #category : #tests }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectly [
 
 	"Look at the class comment for more information about this test"

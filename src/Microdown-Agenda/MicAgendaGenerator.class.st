@@ -49,7 +49,7 @@ MicAgendaGenerator >> build: scheduleFileRef [
 	scheduleFile := scheduleFileRef.
 	self logGenerationStart. 
 	file := Microdown parse: self scheduleFile contents.
-	outputFile := self outputDir / (self scheduleFile basenameWithoutExtension, '.html').
+	outputFile := self outputFile.
 	self outputDir ensureCreateDirectory.
 	outputFile ensureDelete.
 	self visit: file.
@@ -148,7 +148,13 @@ MicAgendaGenerator >> logGenerationStart [
 { #category : #accessing }
 MicAgendaGenerator >> outputDir [
 
-	^ self scheduleFile parent / 'generated'
+	^ FileLocator workingDirectory / 'generated'
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> outputFile [
+	
+	^ self outputDir resolveReference: (self scheduleFile parent) / (self scheduleFile basenameWithoutExtension, '.html')
 ]
 
 { #category : #accessing }
@@ -167,6 +173,11 @@ MicAgendaGenerator >> resourcesOutputDir [
 MicAgendaGenerator >> scheduleFile [
 
 	^ scheduleFile
+]
+
+{ #category : #accessing }
+MicAgendaGenerator >> scheduleFile: aFileReference [ 
+	scheduleFile := aFileReference
 ]
 
 { #category : #'accessing - templates' }
