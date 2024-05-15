@@ -50,7 +50,7 @@ MicAgendaGenerator >> build: scheduleFileRef [
 	self logGenerationStart. 
 	file := Microdown parse: self scheduleFile contents.
 	outputFile := self outputFile.
-	self outputDir ensureCreateDirectory.
+	self ensureOutputFileParentCreated: outputFile.
 	outputFile ensureDelete.
 	self visit: file.
 	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
@@ -114,6 +114,16 @@ MicAgendaGenerator >> dayId [
 MicAgendaGenerator >> dayTalksTemplate [
 
 	^ self templatesDir / 'dayTalks.mustache'
+]
+
+{ #category : #building }
+MicAgendaGenerator >> ensureOutputFileParentCreated: aFileReference [
+
+	self outputDir ensureCreateDirectory.
+	aFileReference parent exists ifTrue: [ ^ self ].
+	
+	self ensureOutputFileParentCreated: aFileReference parent.
+	aFileReference parent ensureCreateDirectory
 ]
 
 { #category : #private }
