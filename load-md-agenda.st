@@ -7,5 +7,3 @@ Metacello new
     repository: 'gitlocal://', ('./Microdown-Agenda' asFileReference fullName), '/src';
     baseline: 'MicrodownAgenda'; 
     load.
-
-Smalltalk snapshot: true andQuit: true
