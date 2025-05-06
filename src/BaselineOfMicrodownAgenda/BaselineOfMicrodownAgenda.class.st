@@ -28,7 +28,7 @@ BaselineOfMicrodownAgenda >> microdown: spec [
 	spec baseline: 'Microdown' with: [ 
 		spec 
 			"repository: (self class environment at: #BaselineOfPharo) microdownRepository;"
-			repository: 'github://pillar-markup/Microdown:dev/src';
+			repository: 'github://pillar-markup/Microdown:v2.6.0/src';
 			loads: #('Microdown-HTMLExporter-Tests') ]
 ]
 
