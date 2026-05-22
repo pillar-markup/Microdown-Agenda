@@ -1,6 +1,6 @@
-Extension { #name : #MicUnorderedListBlock }
+Extension { #name : 'MicUnorderedListBlock' }
 
-{ #category : #'*Microdown-Agenda' }
+{ #category : '*Microdown-Agenda' }
 MicUnorderedListBlock >> hasChildren [
 	
 	^ self children notEmpty

@@ -2,18 +2,19 @@
 I represent a break in a conference day segment.
 "
 Class {
-	#name : #MicBreak,
-	#superclass : #MicSegmentElement,
-	#category : #'Microdown-Agenda'
+	#name : 'MicBreak',
+	#superclass : 'MicSegmentElement',
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicBreak >> accept: aVisitor [ 
 
 	aVisitor visitBreak: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicBreak >> addAttributes: aDictionary [
 
 	super addAttributes: aDictionary.
@@ -21,19 +22,19 @@ MicBreak >> addAttributes: aDictionary [
 		at: #label ifPresent: [ :value | name := value ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicBreak >> isBreak [
 	
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBreak >> name [ 
 
 	^ name ifNil: [ 'Break' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicBreak >> speaker [ 
 
 	^ ''

@@ -3,46 +3,47 @@ I represent a segment of a day in a conference agenda.
 I'm composed of talks and breaks and I have a start time.
 "
 Class {
-	#name : #MicAgendaSegment,
-	#superclass : #MicAgendaElement,
+	#name : 'MicAgendaSegment',
+	#superclass : 'MicAgendaElement',
 	#instVars : [
 		'elements',
 		'agenda'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaSegment >> accept: aVisitor [ 
 	
 	aVisitor visitSegment: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicAgendaSegment >> addElement: aSegmentElement [
 
 	elements add: aSegmentElement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaSegment >> agenda: anAgenda [ 
 	
 	agenda := anAgenda
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaSegment >> elements [
 	^ elements
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAgendaSegment >> initialize [ 
 
 	super initialize.
 	elements := OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaSegment >> startTime [ 
 
 	^ self name asTime

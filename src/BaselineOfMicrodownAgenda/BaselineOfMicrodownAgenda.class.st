@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfMicrodownAgenda,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMicrodownAgenda
+	#name : 'BaselineOfMicrodownAgenda',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMicrodownAgenda',
+	#package : 'BaselineOfMicrodownAgenda'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMicrodownAgenda >> baseline: spec [
 
 	<baseline>
@@ -22,7 +23,7 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 			group: 'default' with: #('Microdown-Agenda-Tests'). ]
 ]
 
-{ #category : #baseline }
+{ #category : 'baseline' }
 BaselineOfMicrodownAgenda >> microdown: spec [ 
 
 	spec baseline: 'Microdown' with: [ 
@@ -32,11 +33,11 @@ BaselineOfMicrodownAgenda >> microdown: spec [
 			loads: #('Microdown-HTMLExporter-Tests') ]
 ]
 
-{ #category : #baseline }
+{ #category : 'baseline' }
 BaselineOfMicrodownAgenda >> mustache: spec [ 
 
 	spec baseline: 'Mustache' with: [ 
 			spec
-				repository: 'github://noha/mustache:v1.2/repository';
+				repository: 'github://noha/mustache:v1.3/repository';
 				loads: #('Core') ]
 ]

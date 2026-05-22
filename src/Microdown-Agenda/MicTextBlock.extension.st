@@ -1,6 +1,6 @@
-Extension { #name : #MicTextBlock }
+Extension { #name : 'MicTextBlock' }
 
-{ #category : #'*Microdown-Agenda' }
+{ #category : '*Microdown-Agenda' }
 MicTextBlock >> hasChildren [
 	
 	^ false

@@ -4,24 +4,25 @@ I'm composed of one or many days.
 I have a start day, a default talk length and a list of rooms used for the conference.
 "
 Class {
-	#name : #MicAgenda,
-	#superclass : #MicAgendaElement,
+	#name : 'MicAgenda',
+	#superclass : 'MicAgendaElement',
 	#instVars : [
 		'days',
 		'rooms',
 		'defaultTalkLength',
 		'defaultRoom'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgenda >> accept: aVisitor [ 
 	
 	aVisitor visitAgenda: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicAgenda >> addAttributes: aDictionary [
 
 	aDictionary 
@@ -30,33 +31,33 @@ MicAgenda >> addAttributes: aDictionary [
 		at: #rooms ifPresent: [ :value | rooms := value ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> days [
 	
 	^ days
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> defaultRoom [
 	^ defaultRoom
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> defaultRoom: aString [ 
 	defaultRoom := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> defaultTalkLength [
 	^ defaultTalkLength
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> defaultTalkLength: anInteger [ 
 	defaultTalkLength := anInteger
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAgenda >> initialize [ 
 
 	super initialize.
@@ -65,19 +66,19 @@ MicAgenda >> initialize [
 	defaultTalkLength := 30
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> lastDay [
 	
 	^ self days last
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> lastSegment [
 	
 	^ self lastDay segments last
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicAgenda >> newDay: aDayString [
 	
 	| day |
@@ -90,13 +91,13 @@ MicAgenda >> newDay: aDayString [
 	^ day
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicAgenda >> newSegment: aMicAgendaSegment [ 
 	
 	self lastDay newSegment: aMicAgendaSegment
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicAgenda >> newSegmentElement: aString [ 
 	| element |
 	element := (MicSegmentElement named: aString)
@@ -107,13 +108,13 @@ MicAgenda >> newSegmentElement: aString [
 	^ element
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> roomIds [
 	
 	^ self rooms keys
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgenda >> rooms [
 	^ rooms
 ]

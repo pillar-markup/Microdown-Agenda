@@ -3,17 +3,18 @@ I'm an abstract element.
 My subclasses are part of a day segment.
 "
 Class {
-	#name : #MicSegmentElement,
-	#superclass : #MicAgendaElement,
+	#name : 'MicSegmentElement',
+	#superclass : 'MicAgendaElement',
 	#instVars : [
 		'room',
 		'length',
 		'agenda'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicSegmentElement class >> named: aString [ 
 	
 	^ aString asLowercase = #break
@@ -21,7 +22,7 @@ MicSegmentElement class >> named: aString [
 		ifFalse: [ MicTalk named: aString ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicSegmentElement >> addAttributes: aDictionary [
 
 	aDictionary
@@ -29,44 +30,44 @@ MicSegmentElement >> addAttributes: aDictionary [
 		at: #room ifPresent: [ :value | room := self symbolFromString: value ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> agenda: anAgenda [ 
 	
 	agenda := anAgenda 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MicSegmentElement >> isBreak [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> length [
 	^ length ifNil: [ agenda defaultTalkLength ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> length: anInteger [ 
 	length := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> link [
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> room [
 	^ room ifNil: [ agenda defaultRoom ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> room: aString [ 
 	room := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> roomName [
 	
 	^ agenda rooms 
@@ -75,13 +76,13 @@ MicSegmentElement >> roomName [
 		ifAbsent: [ self room ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicSegmentElement >> speaker [
 
 	self subclassResponsibility
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicSegmentElement >> symbolFromString: value [
 
 	^ (value beginsWith: '#')

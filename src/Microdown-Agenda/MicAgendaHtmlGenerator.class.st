@@ -2,8 +2,8 @@
 I'm a visitor transforming an AST with Microdown agenda nodes to HTML pages
 "
 Class {
-	#name : #MicAgendaHtmlGenerator,
-	#superclass : #MicHTMLVisitor,
+	#name : 'MicAgendaHtmlGenerator',
+	#superclass : 'MicHTMLVisitor',
 	#instVars : [
 		'time',
 		'scheduleFile',
@@ -14,10 +14,11 @@ Class {
 		'abstractLink',
 		'outputDir'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicAgendaHtmlGenerator class >> on: scheduleFileRef [
 
 	^ self new
@@ -25,19 +26,19 @@ MicAgendaHtmlGenerator class >> on: scheduleFileRef [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> abstractLink [
 
 	^ abstractLink
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> abstractLink: abstractHtmlRef [
 
 	abstractLink := abstractHtmlRef ifEmpty: [ nil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> activeDayCssClasses [
 	
 	^ dayNumber = 1
@@ -45,19 +46,19 @@ MicAgendaHtmlGenerator >> activeDayCssClasses [
 		          ifFalse: [ '' ]
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicAgendaHtmlGenerator >> agendaTemplate [ 
 	
 	^ self templatesDir / 'agenda.mustache'
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicAgendaHtmlGenerator >> build [
 	
 	self buildInOutputDir: self outputDir
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicAgendaHtmlGenerator >> buildAgenda: anAgenda outputDir: outputDirectory name: aName [
 	
 	| outputFile |
@@ -75,7 +76,7 @@ MicAgendaHtmlGenerator >> buildAgenda: anAgenda outputDir: outputDirectory name:
 	self inform: 'Succesfully generated ' , outputFile fullName.
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicAgendaHtmlGenerator >> buildInOutputDir: outputDirectory [
 	
 	| root agenda |
@@ -86,7 +87,7 @@ MicAgendaHtmlGenerator >> buildInOutputDir: outputDirectory [
 	self buildAgenda: agenda outputDir: outputDir name: self scheduleFile basenameWithoutExtension
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> copyResourcesIfAbsent [
 
 	self resourcesOutputDir exists ifTrue: [ ^ self ].
@@ -94,7 +95,7 @@ MicAgendaHtmlGenerator >> copyResourcesIfAbsent [
 	self resourcesDir copyAllTo: self resourcesOutputDir.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> currentDir [
 	" Core repository where to find resources, templates.
 	They come with Microdown Agenda git repository.
@@ -105,7 +106,7 @@ MicAgendaHtmlGenerator >> currentDir [
 		do: [ self scheduleFile parent ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> dayHeaderBlockHtmlForDay: aDay [
 
 	^ (MustacheTemplate on:
@@ -117,13 +118,13 @@ MicAgendaHtmlGenerator >> dayHeaderBlockHtmlForDay: aDay [
 
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicAgendaHtmlGenerator >> dayHeaderBlockTemplate [
 
 	^ self templatesDir / 'dayHeaderBlock.mustache'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> dayHtml [
 
 	^ (MustacheTemplate on: self dayTalksTemplate) value: { 
@@ -132,32 +133,32 @@ MicAgendaHtmlGenerator >> dayHtml [
 			           ('SCHEDULES' -> talksHtml asString) } asDictionary
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> dayId [
 	
 	^ 'day' , dayNumber asString
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicAgendaHtmlGenerator >> dayTalksTemplate [
 
 	^ self templatesDir / 'dayTalks.mustache'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> defaultOutputDir [
 
 	^ self scheduleFile parent / 'generated'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> gitRepositoryDir [
 
 	^ (IceRepository registry 
     		detect: [ :each | 'Microdown-Agenda' = each name ]) repositoryDirectory
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicAgendaHtmlGenerator >> initialize [
 
 	super initialize.
@@ -168,7 +169,7 @@ MicAgendaHtmlGenerator >> initialize [
 	dayNumber := 0.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> logGenerationStart [
 
 	Smalltalk logStdOutDuring: [:logger |
@@ -179,66 +180,66 @@ MicAgendaHtmlGenerator >> logGenerationStart [
 			cr ]. 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> outputDir [
 
 	^ outputDir ifNil: [ outputDir := self defaultOutputDir ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> resourcesDir [
 
 	^ self currentDir / 'resources'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> resourcesOutputDir [
 
 	^ self outputDir / 'resources'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> scheduleFile [
 
 	^ scheduleFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> scheduleFile: aFileReference [ 
 	scheduleFile := aFileReference
 ]
 
-{ #category : #'accessing - templates' }
+{ #category : 'accessing - templates' }
 MicAgendaHtmlGenerator >> talkTemplate [ 
 
 	^ self templatesDir / 'talk.mustache'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> templatesDir [
 
 	^ self currentDir / 'templates'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> time [
 
 	^ time
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> time: aTime [
 
 	time := aTime
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> timePlus: aDuration [
 
 	self time: (self time addTime: aDuration)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaHtmlGenerator >> visitAgenda: anAgenda [
 
 	| agendaHtml |
@@ -254,14 +255,14 @@ MicAgendaHtmlGenerator >> visitAgenda: anAgenda [
 	canvas nextPutAll: agendaHtml
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaHtmlGenerator >> visitBreak: aBreak [
 
 	" talk and break templates are the same "
 	self visitTalk: aBreak 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaHtmlGenerator >> visitDay: aDay [
 
 	dayNumber := dayNumber + 1.
@@ -271,14 +272,14 @@ MicAgendaHtmlGenerator >> visitDay: aDay [
 	talksHtml := ''
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaHtmlGenerator >> visitSegment: aSegment [
 
 	self time: aSegment startTime.
 	aSegment elements do: [ :element | element accept: self ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaHtmlGenerator >> visitTalk: aTalk [
 
 	| timeString talk |

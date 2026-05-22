@@ -3,47 +3,48 @@ I represent a day in a conference agenda.
 I'm composed of day segments.
 "
 Class {
-	#name : #MicDay,
-	#superclass : #MicAgendaElement,
+	#name : 'MicDay',
+	#superclass : 'MicAgendaElement',
 	#instVars : [
 		'segments',
 		'agenda'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDay >> accept: aVisitor [ 
 	
 	aVisitor visitDay: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicDay >> addAttributes: aDictionary [
 
 	"No attributes on Agenda days"
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicDay >> addSegment: anAgendaSegment [ 
 	
 	segments add: anAgendaSegment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDay >> agenda: anAgenda [
 
 	agenda := anAgenda
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MicDay >> initialize [ 
 
 	super initialize.
 	segments := OrderedCollection new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicDay >> newSegment: aString [ 
 	
 	| segment |
@@ -55,7 +56,7 @@ MicDay >> newSegment: aString [
 	^ segment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDay >> segments [
 	^ segments
 ]

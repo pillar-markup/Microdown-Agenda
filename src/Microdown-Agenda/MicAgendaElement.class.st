@@ -2,33 +2,34 @@
 I represent an agenda element and I have a name.
 "
 Class {
-	#name : #MicAgendaElement,
-	#superclass : #Object,
+	#name : 'MicAgendaElement',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaElement >> accept: aVisitor [
 
 	self subclassResponsibility
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicAgendaElement >> addAttributes: aDictionary [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaElement >> name [
 
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaElement >> name: aString [
 
 	name := aString

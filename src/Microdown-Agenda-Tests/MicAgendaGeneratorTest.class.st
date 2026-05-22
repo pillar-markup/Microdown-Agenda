@@ -2,19 +2,17 @@
 This class contains tests but all the test are not correct because we need to have a directory with the templates because to generate the calendar.
 "
 Class {
-	#name : #MicAgendaGeneratorTest,
-	#superclass : #TestCase,
+	#name : 'MicAgendaGeneratorTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'parser',
 		'writer'
 	],
-	#pools : [
-		'MicMicrodownSharedPool'
-	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #exemple }
+{ #category : 'exemple' }
 MicAgendaGeneratorTest >> agendaExempleMultiplesTalks [
 
  ^ '#A cool agenda
@@ -57,7 +55,7 @@ MicAgendaGeneratorTest >> agendaExempleMultiplesTalks [
 
 ]
 
-{ #category : #exemple }
+{ #category : 'exemple' }
 MicAgendaGeneratorTest >> agendaExempleOneTalk [
 
  ^ '#A cool agenda
@@ -75,7 +73,7 @@ MicAgendaGeneratorTest >> agendaExempleOneTalk [
 	
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MicAgendaGeneratorTest >> agendaFor: agendaMarkdownString [
 
 	| root |
@@ -85,7 +83,7 @@ MicAgendaGeneratorTest >> agendaFor: agendaMarkdownString [
 			yourself) agenda.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MicAgendaGeneratorTest >> setUp [
 
 	super setUp.
@@ -93,7 +91,7 @@ MicAgendaGeneratorTest >> setUp [
 	writer := MicAgendaHtmlGenerator new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 
 	"Look at the class comment for more information about this test"
@@ -135,7 +133,7 @@ MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithMultiplesTalks [
 	self assert: (html includesSubstring: '<div class="venue">Building C</div>').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaGeneratorTest >> testConvertMicFileCorrectlyWithOneTalk [
 
 	| agenda html |

@@ -1,10 +1,11 @@
 Class {
-	#name : #MicTalkTest,
-	#superclass : #TestCase,
-	#category : #'Microdown-Agenda-Tests'
+	#name : 'MicTalkTest',
+	#superclass : 'TestCase',
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTalkTest >> testTalkGetDefaultLengthWhenNoLengthSpecified [
 
 	| agenda segment talk |
@@ -19,7 +20,7 @@ MicTalkTest >> testTalkGetDefaultLengthWhenNoLengthSpecified [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTalkTest >> testTalkGetDefaultRoomWhenNoRoomSpecified [
 
 	| agenda segment talk |
@@ -34,7 +35,7 @@ MicTalkTest >> testTalkGetDefaultRoomWhenNoRoomSpecified [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTalkTest >> testTalkGetSpecificRoomWhenRoomSpecified [
 
 	| agenda segment talk |
@@ -50,7 +51,7 @@ MicTalkTest >> testTalkGetSpecificRoomWhenRoomSpecified [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicTalkTest >> testTalkGetSpecifictLengthWhenLengthSpecified [
 
 	| agenda segment talk |

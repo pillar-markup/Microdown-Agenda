@@ -3,16 +3,17 @@ I represent a talk, pat of a day segment of an agenda.
 I have an author and a loink to the talk detail. 
 "
 Class {
-	#name : #MicTalk,
-	#superclass : #MicSegmentElement,
+	#name : 'MicTalk',
+	#superclass : 'MicSegmentElement',
 	#instVars : [
 		'link',
 		'speaker'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicTalk class >> named: aString [
 
 	^ self new
@@ -20,13 +21,13 @@ MicTalk class >> named: aString [
 		yourself
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicTalk >> accept: aVisitor [ 
 	
 	aVisitor visitTalk: self
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MicTalk >> addAttributes: aDictionary [
 
 	super addAttributes: aDictionary.
@@ -35,12 +36,12 @@ MicTalk >> addAttributes: aDictionary [
 		at: #link ifPresent: [ :value | link := value ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTalk >> link [
 	^ link
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicTalk >> speaker [
 	^ speaker
 ]

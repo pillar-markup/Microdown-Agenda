@@ -7,15 +7,16 @@ MicAgendaPillarGenerator on: './esug.github.io/2024-Conference/agenda.md' asFile
 ```
 "
 Class {
-	#name : #MicAgendaPillarGenerator,
-	#superclass : #MicHTMLVisitor,
+	#name : 'MicAgendaPillarGenerator',
+	#superclass : 'MicHTMLVisitor',
 	#instVars : [
 		'output'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicAgendaPillarGenerator class >> from: anAgenda [
 
 	| generator |
@@ -27,7 +28,7 @@ MicAgendaPillarGenerator class >> from: anAgenda [
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MicAgendaPillarGenerator class >> on: aMicAgendaFileReference [
 	| root agenda |
 	root :=  Microdown parse: aMicAgendaFileReference contents.
@@ -36,18 +37,18 @@ MicAgendaPillarGenerator class >> on: aMicAgendaFileReference [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> closeTag [
 	output nextPutAll: '!>'; cr.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicAgendaPillarGenerator >> output: aStream [
 
 	output := aStream
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> visitAgenda: anAgenda [
 
 	output 
@@ -60,7 +61,7 @@ MicAgendaPillarGenerator >> visitAgenda: anAgenda [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> visitBreak: aSegment [
 
 	output
@@ -75,7 +76,7 @@ MicAgendaPillarGenerator >> visitBreak: aSegment [
 	output cr
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> visitDay: aDay [
 
 	output 
@@ -86,7 +87,7 @@ MicAgendaPillarGenerator >> visitDay: aDay [
 	self closeTag.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> visitSegment: aSegment [
 
 	output 
@@ -98,7 +99,7 @@ MicAgendaPillarGenerator >> visitSegment: aSegment [
 	self closeTag
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicAgendaPillarGenerator >> visitTalk: aTalk [
 
 	output 

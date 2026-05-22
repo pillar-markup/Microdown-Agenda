@@ -1,20 +1,21 @@
 Class {
-	#name : #MicAgendaAstTest,
-	#superclass : #TestCase,
+	#name : 'MicAgendaAstTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'parser'
 	],
-	#category : #'Microdown-Agenda-Tests'
+	#category : 'Microdown-Agenda-Tests',
+	#package : 'Microdown-Agenda-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MicAgendaAstTest >> setUp [
 
 	super setUp.
 	parser := Microdown new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaAstTest >> testCanParseAgendaAttributes [
 
 	| source root agenda |
@@ -36,7 +37,7 @@ MicAgendaAstTest >> testCanParseAgendaAttributes [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaAstTest >> testCanParseBreak [
 
 	| source root agenda modelGenerator segment break |
@@ -57,7 +58,7 @@ MicAgendaAstTest >> testCanParseBreak [
 	self assert: break room equals: #amphiA.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaAstTest >> testCanParseDay [
 
 	| source root agenda |
@@ -73,7 +74,7 @@ MicAgendaAstTest >> testCanParseDay [
 	self assert: agenda days first name equals: '2023 march 3'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaAstTest >> testCanParseSegment [
 
 	| source root agenda modelGenerator segments segment |
@@ -101,7 +102,7 @@ MicAgendaAstTest >> testCanParseSegment [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MicAgendaAstTest >> testCanParseTalk [
 
 	| source root agenda modelGenerator segment talk |

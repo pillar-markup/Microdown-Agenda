@@ -2,48 +2,50 @@
 I'm a visitor transforming a standard microdown document describing an agenda to an AST with Microdown agenda nodes
 "
 Class {
-	#name : #MicDocumentToAgenda,
-	#superclass : #Object,
+	#name : 'MicDocumentToAgenda',
+	#superclass : 'Object',
 	#instVars : [
 		'agenda',
 		'currentElement'
 	],
-	#category : #'Microdown-Agenda'
+	#category : 'Microdown-Agenda',
+	#package : 'Microdown-Agenda'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentToAgenda >> agenda [
 
 	^ agenda
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MicDocumentToAgenda >> agenda: aMicAgenda [ 
 	agenda := aMicAgenda
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MicDocumentToAgenda >> attributesFromList: anUnorderedList [
 
 	| dict |
 	dict := Dictionary new.
-	anUnorderedList children do: [ :listItem | | separatorIndex text value |
-		text := listItem text.
-		separatorIndex := listItem text indexOf: $:.
-		value := listItem hasChildren
-			ifTrue: [ self attributesFromList: listItem children second ] 
-			ifFalse: [ (text allButFirst: separatorIndex) trimmed ].
-		dict at: (text first: separatorIndex - 1) put: value ].
-	^ dict 
+	anUnorderedList children do: [ :listItem |
+			| separatorIndex text value |
+			text := listItem basicText.
+			separatorIndex := text indexOf: $:.
+			value := listItem hasChildren
+				         ifTrue: [ self attributesFromList: listItem children second ]
+				         ifFalse: [ (text allButFirst: separatorIndex) trimBoth ].
+			dict at: (text first: separatorIndex - 1) put: value ].
+	^ dict
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visit: aMicElement [
 
 	^ aMicElement accept: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitAgenda: aMicHeaderBlock [ 
 	
 	agenda := MicAgenda new
@@ -53,20 +55,20 @@ MicDocumentToAgenda >> visitAgenda: aMicHeaderBlock [
 	currentElement := agenda
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitChildrenOf: anElement [
 
 	^ anElement children collect: [ :each | each accept: self ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitDay: aMicHeaderBlock [
 
 	currentElement := agenda newDay:
 		                  aMicHeaderBlock headerElements first text
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitHeader: aHeader [
 
 	aHeader level = 1 
@@ -78,32 +80,32 @@ MicDocumentToAgenda >> visitHeader: aHeader [
 	self visitSegmentElement: aHeader.
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitRoot: aRoot [
 
 	^ self visitChildrenOf: aRoot
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitSegment: aMicHeaderBlock [
 
 	currentElement := agenda newSegment: aMicHeaderBlock headerElements first text
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitSegmentElement: aMicHeaderBlock [
 
 	currentElement := self agenda newSegmentElement: aMicHeaderBlock headerElements first text.
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitUnorderedList: anUnorderedList [
 
 	currentElement addAttributes: (self attributesFromList: anUnorderedList)
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MicDocumentToAgenda >> visitUnorderedListItem: anItem [
 
 	^ self visitChildrenOf: anItem
