@@ -4,8 +4,9 @@ I represent a break in a conference day segment.
 Class {
 	#name : 'MicBreak',
 	#superclass : 'MicSegmentElement',
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Model',
+	#package : 'Microdown-Agenda',
+	#tag : 'Model'
 }
 
 { #category : 'visiting' }

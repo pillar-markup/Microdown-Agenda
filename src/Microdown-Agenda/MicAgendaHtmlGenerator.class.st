@@ -14,8 +14,9 @@ Class {
 		'abstractLink',
 		'outputDir'
 	],
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Visitors',
+	#package : 'Microdown-Agenda',
+	#tag : 'Visitors'
 }
 
 { #category : 'instance creation' }
@@ -60,31 +61,34 @@ MicAgendaHtmlGenerator >> build [
 
 { #category : 'building' }
 MicAgendaHtmlGenerator >> buildAgenda: anAgenda outputDir: outputDirectory name: aName [
-	
 	| outputFile |
+
 	self logGenerationStart.
 	outputDir := outputDirectory.
-	outputFile := self outputDir / (aName, '.html').
+	outputFile := self outputDir / (aName , '.html').
 	self outputDir ensureCreateDirectory.
 	outputFile ensureDelete.
 
 	self visit: anAgenda.
-	
+
 	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
 	self copyResourcesIfAbsent.
-	
-	self inform: 'Succesfully generated ' , outputFile fullName.
+	InformativeNotification signal: 'Succesfully generated ' , outputFile fullName
 ]
 
 { #category : 'building' }
 MicAgendaHtmlGenerator >> buildInOutputDir: outputDirectory [
-	
-	| root agenda |
 
+	| root agenda |
 	outputDir := outputDirectory.
-	root :=  Microdown parse: self scheduleFile contents.
-	agenda := (MicDocumentToAgenda new visit: root; yourself) agenda.
-	self buildAgenda: agenda outputDir: outputDir name: self scheduleFile basenameWithoutExtension
+	root := Microdown parse: self scheduleFile contents.
+	agenda := (MicDocumentToAgenda new
+		           visit: root;
+		           yourself) agenda.
+	self 
+		buildAgenda: agenda 
+		outputDir: outputDir 
+		name: self scheduleFile basenameWithoutExtension
 ]
 
 { #category : 'private' }

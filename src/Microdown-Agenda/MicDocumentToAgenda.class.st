@@ -8,8 +8,9 @@ Class {
 		'agenda',
 		'currentElement'
 	],
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Visitors',
+	#package : 'Microdown-Agenda',
+	#tag : 'Visitors'
 }
 
 { #category : 'accessing' }

@@ -12,8 +12,9 @@ Class {
 		'defaultTalkLength',
 		'defaultRoom'
 	],
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Model',
+	#package : 'Microdown-Agenda',
+	#tag : 'Model'
 }
 
 { #category : 'visiting' }

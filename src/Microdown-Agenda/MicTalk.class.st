@@ -9,8 +9,9 @@ Class {
 		'link',
 		'speaker'
 	],
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Model',
+	#package : 'Microdown-Agenda',
+	#tag : 'Model'
 }
 
 { #category : 'instance creation' }

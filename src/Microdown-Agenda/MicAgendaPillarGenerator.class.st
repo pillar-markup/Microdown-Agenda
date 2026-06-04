@@ -12,8 +12,9 @@ Class {
 	#instVars : [
 		'output'
 	],
-	#category : 'Microdown-Agenda',
-	#package : 'Microdown-Agenda'
+	#category : 'Microdown-Agenda-Visitors',
+	#package : 'Microdown-Agenda',
+	#tag : 'Visitors'
 }
 
 { #category : 'instance creation' }
