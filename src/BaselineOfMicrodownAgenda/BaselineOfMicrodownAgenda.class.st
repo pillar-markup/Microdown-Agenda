@@ -25,9 +25,19 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 
 { #category : 'querying' }
 BaselineOfMicrodownAgenda >> installedMicrodownVersion [
+	
+	SystemVersion current major < 14 
+		ifTrue: [ ^ self installedMicrodownVersionBeforePharo14 ].
 
 	^ (MetacelloProjectRegistry projects detect: [ :metacelloProject | metacelloProject name = 'Microdown' ]) 
 		repositories repositorySpecs first description
+]
+
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> installedMicrodownVersionBeforePharo14 [
+
+	^ (MetacelloProjectRegistration registry baselineProjectSpecs detect: [ :metacelloProject | metacelloProject name = 'Microdown' ]) 
+		repositories map keys first
 ]
 
 { #category : 'baseline' }
