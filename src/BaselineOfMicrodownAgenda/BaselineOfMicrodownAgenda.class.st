@@ -23,14 +23,29 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 			group: 'default' with: #('Microdown-Agenda-Tests'). ]
 ]
 
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> installedMicrodownVersion [
+
+	^ (MetacelloProjectRegistry projects detect: [ :metacelloProject | metacelloProject name = 'Microdown' ]) 
+		repositories repositorySpecs first description
+]
+
 { #category : 'baseline' }
 BaselineOfMicrodownAgenda >> microdown: spec [ 
 
 	spec baseline: 'Microdown' with: [ 
 		spec 
-			"repository: (self class environment at: #BaselineOfPharo) microdownRepository;"
-			repository: 'github://pillar-markup/Microdown:dev/src';
+			repository: self microdownRepository;
 			loads: #('Microdown-HTMLExporter-Tests') ]
+]
+
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> microdownRepository [ 
+
+	"Use installed microdown version if available to avoid conflicts"
+	^ [ self installedMicrodownVersion ]
+		on: NotFound
+		do: [ 'github://pillar-markup/Microdown:dev/src' ]
 ]
 
 { #category : 'baseline' }
