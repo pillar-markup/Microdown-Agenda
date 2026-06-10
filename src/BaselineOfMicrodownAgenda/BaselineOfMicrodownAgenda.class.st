@@ -24,23 +24,23 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 ]
 
 { #category : 'querying' }
-BaselineOfMicrodownAgenda >> installedMicrodownVersion [
-	
-	SystemVersion current major < 14 
-		ifTrue: [ ^ self installedMicrodownVersionBeforePharo14 ].
+BaselineOfMicrodownAgenda >> installedVersionBeforePharo14For: aProjectName [
 
-	^ (MetacelloProjectRegistry projects detect: [ :metacelloProject | metacelloProject name = 'Microdown' ]) 
-		repositories repositorySpecs first description
-]
-
-{ #category : 'querying' }
-BaselineOfMicrodownAgenda >> installedMicrodownVersionBeforePharo14 [
-
-	^ (MetacelloProjectRegistration registry baselineProjectSpecs detect: [ :metacelloProject | metacelloProject name = 'Microdown' ]) 
+	^ (MetacelloProjectRegistration registry baselineProjectSpecs detect: [ :metacelloProject | metacelloProject name = aProjectName ]) 
 		repositories map keys first
 ]
 
-{ #category : 'baseline' }
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> installedVersionFor: aProjectName [
+	
+	SystemVersion current major < 14 
+		ifTrue: [ ^ self installedVersionBeforePharo14For: aProjectName ].
+
+	^ (MetacelloProjectRegistry projects detect: [ :metacelloProject | metacelloProject name = aProjectName ]) 
+		repositories repositorySpecs first description
+]
+
+{ #category : 'baselines' }
 BaselineOfMicrodownAgenda >> microdown: spec [ 
 
 	spec baseline: 'Microdown' with: [ 
@@ -53,16 +53,25 @@ BaselineOfMicrodownAgenda >> microdown: spec [
 BaselineOfMicrodownAgenda >> microdownRepository [ 
 
 	"Use installed microdown version if available to avoid conflicts"
-	^ [ self installedMicrodownVersion ]
+	^ [ self installedVersionFor: 'Microdown' ]
 		on: NotFound
 		do: [ 'github://pillar-markup/Microdown:dev/src' ]
 ]
 
-{ #category : 'baseline' }
+{ #category : 'baselines' }
 BaselineOfMicrodownAgenda >> mustache: spec [ 
 
 	spec baseline: 'Mustache' with: [ 
 			spec
-				repository: 'github://noha/mustache:v1.3/repository';
+				repository: self mustacheRepository;
 				loads: #('Core') ]
+]
+
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> mustacheRepository [ 
+
+	"Use installed Mustache version if available to avoid conflicts"
+	^ [ self installedVersionFor: 'Mustache' ]
+		on: NotFound
+		do: [ 'github://noha/mustache:v1.4/repository' ]
 ]
