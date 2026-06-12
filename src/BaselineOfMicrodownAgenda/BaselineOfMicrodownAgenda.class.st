@@ -10,17 +10,35 @@ BaselineOfMicrodownAgenda >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		self microdown: spec.
-		self mustache: spec.				
+		"self microdown: spec.
+		self mustache: spec.
+		self foliage: spec."			
 
 		spec
 			package: #'Microdown-Agenda'
-				with: [ spec requires: #( #Microdown #Mustache ) ];
+				"with: [ spec requires: #( #Microdown #Mustache #Foliage ) ]";
 			package: #'Microdown-Agenda-Tests'
 				with: [ spec requires: #( #'Microdown-Agenda' ) ].
 				
 		spec
 			group: 'default' with: #('Microdown-Agenda-Tests'). ]
+]
+
+{ #category : 'baselines' }
+BaselineOfMicrodownAgenda >> foliage: spec [ 
+
+	spec baseline: 'Foliage' with: [ 
+			spec
+				repository: self foliageRepository ]
+]
+
+{ #category : 'querying' }
+BaselineOfMicrodownAgenda >> foliageRepository [ 
+
+	"Use installed Folaige version if available to avoid conflicts"
+	^ [ self installedVersionFor: 'Foliage' ]
+		on: NotFound
+		do: [ 'github://pillar-markup/Foliage' ]
 ]
 
 { #category : 'querying' }
