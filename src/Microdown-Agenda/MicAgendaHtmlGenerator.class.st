@@ -72,7 +72,7 @@ MicAgendaHtmlGenerator >> buildAgenda: anAgenda [
 	self outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
 	self copyResourcesIfAbsent.
 	
-	InformativeNotification signal: 'Succesfully generated ' , self outputFile fullName
+	self logGenerationEnd
 ]
 
 { #category : 'building' }
@@ -194,6 +194,17 @@ MicAgendaHtmlGenerator >> initialize [
 ]
 
 { #category : 'private' }
+MicAgendaHtmlGenerator >> logGenerationEnd [
+
+	Smalltalk logStdOutDuring: [:logger |
+		logger 
+			nextPutAll: 'Succesfully generated "';
+			nextPutAll: self outputFile fullName;
+			nextPut: $";
+			cr ]
+]
+
+{ #category : 'private' }
 MicAgendaHtmlGenerator >> logGenerationStart [
 
 	Smalltalk logStdOutDuring: [:logger |
@@ -201,7 +212,7 @@ MicAgendaHtmlGenerator >> logGenerationStart [
 			nextPutAll: 'generating agenda for "';
 			nextPutAll: self scheduleFile fullName;
 			nextPut: $";
-			cr ]. 
+			cr ]
 ]
 
 { #category : 'accessing' }
