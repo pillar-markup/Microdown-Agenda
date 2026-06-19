@@ -12,7 +12,11 @@ Class {
 		'daysHeaderBlockHtml',
 		'dayNumber',
 		'abstractLink',
-		'outputDir'
+		'outputDir',
+		'outputFile',
+		'resourcesOutputDir',
+		'resourcesPath',
+		'resourcesOutputPath'
 	],
 	#category : 'Microdown-Agenda-Visitors',
 	#package : 'Microdown-Agenda',
@@ -60,20 +64,22 @@ MicAgendaHtmlGenerator >> build [
 ]
 
 { #category : 'building' }
-MicAgendaHtmlGenerator >> buildAgenda: anAgenda outputDir: outputDirectory name: aName [
-	| outputFile |
-
+MicAgendaHtmlGenerator >> buildAgenda: anAgenda [
+	
 	self logGenerationStart.
-	outputDir := outputDirectory.
-	outputFile := self outputDir / (aName , '.html').
-	self outputDir ensureCreateDirectory.
-	outputFile ensureDelete.
-
+	
 	self visit: anAgenda.
-
-	outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
+	self outputFile writeStreamDo: [ :stream | stream nextPutAll: self contents ].
 	self copyResourcesIfAbsent.
-	InformativeNotification signal: 'Succesfully generated ' , outputFile fullName
+	
+	InformativeNotification signal: 'Succesfully generated ' , self outputFile fullName
+]
+
+{ #category : 'building' }
+MicAgendaHtmlGenerator >> buildAgenda: anAgenda outputDir: outputDirectory name: aName [
+
+	self prepareOutputDir: outputDirectory name: aName.
+	self buildAgenda: anAgenda	
 ]
 
 { #category : 'building' }
@@ -152,7 +158,17 @@ MicAgendaHtmlGenerator >> dayTalksTemplate [
 { #category : 'accessing' }
 MicAgendaHtmlGenerator >> defaultOutputDir [
 
-	^ self scheduleFile parent / 'generated'
+	^ FileLocator workingDirectory / 'generated'
+]
+
+{ #category : 'private' }
+MicAgendaHtmlGenerator >> ensureOutputFileParentCreated: aFileReference [
+
+	self outputDir ensureCreateDirectory.
+	aFileReference parent exists ifTrue: [ ^ self ].
+	
+	self ensureOutputFileParentCreated: aFileReference parent.
+	aFileReference parent ensureCreateDirectory
 ]
 
 { #category : 'private' }
@@ -191,6 +207,34 @@ MicAgendaHtmlGenerator >> outputDir [
 ]
 
 { #category : 'accessing' }
+MicAgendaHtmlGenerator >> outputDir: aDirectory [
+
+	outputDir := aDirectory
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> outputFile [
+	
+	^ outputFile
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> outputFile: aFileReference [
+	
+	outputFile := aFileReference
+]
+
+{ #category : 'building' }
+MicAgendaHtmlGenerator >> prepareOutputDir: aDirectory name: aName [
+
+	outputDir := aDirectory.
+	outputFile := self outputDir / (aName , '.html').
+	self ensureOutputFileParentCreated: outputFile.
+	outputFile ensureDelete.
+
+]
+
+{ #category : 'accessing' }
 MicAgendaHtmlGenerator >> resourcesDir [
 
 	^ self currentDir / 'resources'
@@ -199,7 +243,31 @@ MicAgendaHtmlGenerator >> resourcesDir [
 { #category : 'accessing' }
 MicAgendaHtmlGenerator >> resourcesOutputDir [
 
-	^ self outputDir / 'resources'
+	^ resourcesOutputDir ifNil: [ self outputDir / 'resources' ] 
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> resourcesOutputDir: aDirectory [
+
+	resourcesOutputDir := aDirectory 
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> resourcesOutputPath [
+	
+	^ resourcesOutputPath 
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> resourcesOutputPath: aPath [
+	
+	resourcesOutputPath := aPath 
+]
+
+{ #category : 'accessing' }
+MicAgendaHtmlGenerator >> resourcesPath [
+
+	^ resourcesPath ifNil: [ './resources' ]
 ]
 
 { #category : 'accessing' }
@@ -249,13 +317,14 @@ MicAgendaHtmlGenerator >> visitAgenda: anAgenda [
 	| agendaHtml |
 	
 	anAgenda days do: [ :day | day accept: self ].
-	
+
 	agendaHtml := (MustacheTemplate on: self agendaTemplate) value: { 
 			          ('AGENDA_NAME' -> anAgenda name).
 						 ('HAS_ABSTRACT' -> self abstractLink notNil).
 						 ('ABSTRACT_LINK' -> self abstractLink).
 			          ('DAYS_HEADER_BLOCK_HTML' -> daysHeaderBlockHtml).
-			          ('DAYS_HTML' -> daysHtml) } asDictionary.
+			          ('DAYS_HTML' -> daysHtml).
+						 ('RESOURCES_PATH' -> self resourcesOutputPath) } asDictionary.
 	canvas nextPutAll: agendaHtml
 ]
 

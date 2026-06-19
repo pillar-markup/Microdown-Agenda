@@ -89,6 +89,7 @@ MicAgendaGeneratorTest >> setUp [
 	super setUp.
 	parser := Microdown new.
 	writer := MicAgendaHtmlGenerator new.
+	writer scheduleFile: FileSystem memory root.
 ]
 
 { #category : 'tests' }

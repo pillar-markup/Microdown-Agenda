@@ -35,3 +35,25 @@ FOMicrodownAgenda >> agenda: anAgendaDescription [
 
 	agenda := anAgendaDescription
 ]
+
+{ #category : 'building' }
+FOMicrodownAgenda >> htmlGenerator [
+
+	^ MicAgendaHtmlGenerator new
+		resourcesOutputPath: self resourcesRelativePath , 'resources/agenda';
+		resourcesOutputDir: (self website targetPath resolve: 'resources/agenda');
+		prepareOutputDir: self publishPath parent name: (self name withoutSuffix: '.mda');
+		yourself
+]
+
+{ #category : 'accessing' }
+FOMicrodownAgenda >> resourcesRelativePath [
+	"We make agenda resources available at website target path / resources / agenda"
+
+	| nbNestedFolders resourcesPathPrefix |
+	"compute the number of parent to reach the resources"
+	nbNestedFolders := (self publishPath parent relativeTo: self website targetPath) segments size.
+	resourcesPathPrefix := ''.
+	nbNestedFolders timesRepeat: [ resourcesPathPrefix := '../' , resourcesPathPrefix ].
+	^ resourcesPathPrefix
+]
