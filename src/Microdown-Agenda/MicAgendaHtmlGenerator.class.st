@@ -109,11 +109,11 @@ MicAgendaHtmlGenerator >> copyResourcesIfAbsent [
 MicAgendaHtmlGenerator >> currentDir [
 	" Core repository where to find resources, templates.
 	They come with Microdown Agenda git repository.
-	If the git repository is not found, we assume resources and templates to be available in the same directory as the agenda file"
+	If the git repository is not found, we assume resources and templates to be available in the same directory as the image file"
 
 	^ [ self gitRepositoryDir ]
 		on: NotFound 
-		do: [ self scheduleFile parent ]
+		do: [ FileLocator workingDirectory / 'agenda' ]
 ]
 
 { #category : 'private' }
@@ -174,8 +174,12 @@ MicAgendaHtmlGenerator >> ensureOutputFileParentCreated: aFileReference [
 { #category : 'private' }
 MicAgendaHtmlGenerator >> gitRepositoryDir [
 
-	^ (IceRepository registry 
-    		detect: [ :each | 'Microdown-Agenda' = each name ]) repositoryDirectory
+	| dir |
+	dir := (IceRepository registry 
+    		detect: [ :each | 'Microdown-Agenda' = each name ]) repositoryDirectory.
+		
+	dir exists ifFalse: [ NotFound signal ].
+	^ dir
 ]
 
 { #category : 'initialization' }
